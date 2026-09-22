@@ -1,0 +1,54 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens. Every `--color-*`, `--font-*`, `--ease-*` etc. here becomes a
+ * Tailwind utility (`bg-brand`, `font-display`, `ease-out-expo`, ...).
+ * The values are placeholders until the designs arrive.
+ */
+@theme {
+  --font-sans: ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-sans);
+
+  --color-ink: oklch(0.2 0.01 260);
+  --color-ink-muted: oklch(0.45 0.01 260);
+  --color-surface: oklch(0.99 0 0);
+  --color-surface-raised: oklch(0.96 0.005 260);
+  --color-brand: oklch(0.55 0.2 265);
+  --color-brand-contrast: oklch(0.99 0 0);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    @apply bg-surface text-ink antialiased;
+    scroll-behavior: smooth;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand;
+  }
+}
+
+/*
+ * Scroll-reveal support (see src/scripts/animations.ts).
+ * Elements start hidden only when JS runs and the user allows motion, so
+ * content is always visible without JS or with reduced motion on.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-animate],
+  html.js [data-animate-stagger] > * {
+    opacity: 0;
+  }
+
+  /* Cross-document view transitions: a zero-JS crossfade between pages. */
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

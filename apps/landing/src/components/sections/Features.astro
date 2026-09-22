@@ -1,0 +1,27 @@
+---
+import Container from '@/components/Container.astro';
+import { getDictionary, type Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getDictionary(locale);
+---
+
+<section id="features" class="bg-surface-raised py-24">
+  <Container>
+    <h2 data-animate="fade-up" class="font-display text-3xl font-semibold tracking-tight">
+      {t.features.title}
+    </h2>
+    <ul data-animate-stagger="fade-up" class="mt-12 grid gap-6 sm:grid-cols-3">
+      {t.features.items.map((item) => (
+        <li class="rounded-2xl bg-surface p-6 shadow-sm">
+          <h3 class="font-semibold">{item.title}</h3>
+          <p class="mt-2 text-ink-muted">{item.body}</p>
+        </li>
+      ))}
+    </ul>
+  </Container>
+</section>

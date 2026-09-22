@@ -1,0 +1,41 @@
+---
+import Container from '@/components/Container.astro';
+import { getDictionary, type Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getDictionary(locale);
+---
+
+<section class="py-24 sm:py-32">
+  <Container class="max-w-3xl text-center">
+    <p data-animate="fade-in" class="text-sm font-medium tracking-widest text-brand uppercase">
+      {t.hero.eyebrow}
+    </p>
+    <h1
+      data-animate="fade-up"
+      data-animate-delay="0.1"
+      class="mt-4 font-display text-4xl font-semibold tracking-tight text-balance sm:text-6xl"
+    >
+      {t.hero.title}
+    </h1>
+    <p
+      data-animate="fade-up"
+      data-animate-delay="0.2"
+      class="mt-6 text-lg text-pretty text-ink-muted"
+    >
+      {t.hero.subtitle}
+    </p>
+    <div data-animate="scale-in" data-animate-delay="0.3" class="mt-10">
+      <a
+        href="#contact"
+        class="inline-flex items-center rounded-full bg-brand px-6 py-3 font-medium text-brand-contrast transition-transform duration-300 ease-out-expo hover:-translate-y-0.5"
+      >
+        {t.hero.cta}
+      </a>
+    </div>
+  </Container>
+</section>
