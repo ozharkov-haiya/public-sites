@@ -1,0 +1,82 @@
+---
+import '@/styles/global.css';
+import Footer from '@/components/Footer.astro';
+import Header from '@/components/Header.astro';
+import {
+  defaultLocale,
+  getDictionary,
+  getRoutePath,
+  locales,
+  localizeUrl,
+  type Locale,
+} from '@/i18n';
+
+interface Props {
+  locale: Locale;
+  /** Page title. Falls back to the site title; otherwise suffixed with the site name. */
+  title?: string;
+  description?: string;
+  /** Skip canonical/hreflang and ask crawlers not to index (e.g. 404). */
+  noindex?: boolean;
+}
+
+const { locale, title, description, noindex = false } = Astro.props;
+const t = getDictionary(locale);
+const routePath = getRoutePath(Astro.url.pathname);
+
+const pageTitle = title ? `${title} · ${t.meta.siteName}` : t.meta.title;
+const pageDescription = description ?? t.meta.description;
+const canonical = localizeUrl(locale, routePath);
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    {noindex ? (
+      <meta name="robots" content="noindex" />
+    ) : (
+      <>
+        <link rel="canonical" href={canonical} />
+        {locales.map((l) => (
+          <link rel="alternate" hreflang={l} href={localizeUrl(l, routePath)} />
+        ))}
+        <link rel="alternate" hreflang="x-default" href={localizeUrl(defaultLocale, routePath)} />
+      </>
+    )}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={t.meta.siteName} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={locale} />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body class="flex min-h-dvh flex-col">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded focus:bg-ink focus:px-4 focus:py-2 focus:text-surface"
+    >
+      {t.a11y.skipToContent}
+    </a>
+    <Header locale={locale} />
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+    <Footer locale={locale} />
+
+    <script>
+      import '@/scripts/animations';
+    </script>
+  </body>
+</html>

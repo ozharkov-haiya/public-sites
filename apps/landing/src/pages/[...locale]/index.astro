@@ -1,0 +1,21 @@
+---
+import Features from '@/components/sections/Features.astro';
+import Hero from '@/components/sections/Hero.astro';
+import { getLocaleStaticPaths, type Locale } from '@/i18n';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+export function getStaticPaths() {
+  return getLocaleStaticPaths();
+}
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<BaseLayout locale={locale}>
+  <Hero locale={locale} />
+  <Features locale={locale} />
+</BaseLayout>

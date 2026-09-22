@@ -1,0 +1,17 @@
+---
+import Container from '@/components/Container.astro';
+import { format, getDictionary, type Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getDictionary(locale);
+---
+
+<footer id="contact" class="border-t border-ink/10 py-10 text-sm text-ink-muted">
+  <Container>
+    <p>{format(t.footer.copyright, { year: new Date().getFullYear() })}</p>
+  </Container>
+</footer>

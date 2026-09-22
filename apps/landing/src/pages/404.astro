@@ -1,0 +1,19 @@
+---
+// Vercel serves one static 404.html for every locale, so it uses the default locale.
+import Container from '@/components/Container.astro';
+import { defaultLocale, getDictionary, localizePath } from '@/i18n';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const locale = defaultLocale;
+const t = getDictionary(locale);
+---
+
+<BaseLayout locale={locale} title={t.notFound.title} noindex>
+  <Container class="max-w-2xl py-32 text-center">
+    <h1 class="font-display text-4xl font-semibold tracking-tight">{t.notFound.title}</h1>
+    <p class="mt-4 text-ink-muted">{t.notFound.body}</p>
+    <a href={localizePath(locale)} class="mt-8 inline-block font-medium text-brand hover:underline">
+      {t.notFound.back}
+    </a>
+  </Container>
+</BaseLayout>
